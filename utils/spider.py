@@ -1,0 +1,45 @@
+import  requests
+from lxml.html import etree
+
+class GetCityWeather:
+    def __init__(self,city):
+        self.url = self.search_city(city)
+    # 查询城市,返回城市URL
+    def search_city(self,city):
+        url  = 'http://www.tianqi.com/tianqi/search'
+        response =  requests.get(url,params={'keyword':city})
+        return response.url
+    # 获取页面主体
+    def get_page(self):
+        response = requests.get(self.url)
+        if '404' in response.url:
+            return   {
+                'status':404
+        }
+        # if :
+        html = etree.HTML(response.content.decode())
+
+        return  self.get_weather(html)
+    def get_weather(self,html):
+        city = html.xpath('/html/body/div[5]/div/div[1]/dl/dd[1]/h2')
+        date = html.xpath('/html/body/div[5]/div/div[1]/dl/dd[2]')
+        weather = html.xpath("/html/body/div[5]/div/div[1]/dl/dd[3]/span/b")
+        temperture = html.xpath('/html/body/div[5]/div/div[1]/dl/dd[3]/span/text()')
+        humidity = html.xpath('/html/body/div[5]/div/div[1]/dl/dd[4]/b[1]')
+        wind = html.xpath('/html/body/div[5]/div/div[1]/dl/dd[4]/b[2]')
+        uv = html.xpath('/html/body/div[5]/div/div[1]/dl/dd[4]/b[3]')
+        air = html.xpath('/html/body/div[5]/div/div[1]/dl/dd[5]/h5')
+        pm = html.xpath('/html/body/div[5]/div/div[1]/dl/dd[5]/h6')
+
+        return {
+            '城市':city[0].text,
+            '日期':(date[0].text).replace('\u3000','  '),
+            '天气':weather[0].text,
+            '温度':temperture[0],
+            '湿度':humidity[0].text,
+            '风向':wind[0].text,
+            '紫外线':uv[0].text,
+            '空气质量':air[0].text,
+            'PM':pm[0].text,
+        }
+
