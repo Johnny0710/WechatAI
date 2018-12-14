@@ -6,7 +6,7 @@ from utils import weather,dispose,wxpy_callback
 
 
 # 初始化管理员,这个名称为登录的微信好友列表中的名称或备注名
-admin_name = '攸小小'
+admin_name = 'admin_name'
 
 # 初始化机器人,登录微信
 bot = Bot(cache_path=True,console_qr=2,qr_path='otherMessage/qr_code.png',qr_callback=wxpy_callback.qr_callback)
