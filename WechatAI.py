@@ -26,7 +26,6 @@ admin = ensure_one( bot.search(admin_name))
 # 帮助文档:https://wxpy.readthedocs.io/zh/latest/messages.html?highlight=register
 @bot.register()
 def friend_msg(msg):
-
     # 获取当前消息的类型
     msg_type = msg.raw['MsgType']
     # 获取当前消息的文本
@@ -67,6 +66,7 @@ def friend_msg(msg):
 
         # 管理员回复消息,判断管理员发送的消息是否包含@字符,且@字符为第一位时,代表回复好友消息
         if '@' in message and message[0] == '@' and  msg.sender.name == admin.name:
+
             return dispose.replay_message(message,my_friends)
 
         # 管理员回复消息,判断管理员发送的消息是否包含-字符,且-字符为第一位时,代表回复群消息

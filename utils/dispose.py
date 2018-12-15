@@ -1,5 +1,6 @@
 from wxpy import ensure_one
 
+from . import  spider
 
 def get_no_forward(MsgType, sender,member):
     # 获取不能转发的消息
@@ -38,11 +39,17 @@ def get_forward(MsgType, sender,member):
 def replay_message(message,friends):
     # 将管理员消息按照#分割,0 为好友名称 1 为消息内容
     rep = message.split('#')
+
+    # 判断是否为查询快递命令
+    if '@快递' in rep[0]:
+        express = spider.GetExpress(''.join(rep[1:]))
+        return express.get_express()
     # 获取好友名称,将@替换掉
     reply_name = rep[0].replace('@', '')
 
     # 查找人员,返回对应的对象
     replay = friends.search(reply_name)
+
     # 如果有数据,表示有该好友
     if replay:
         # 获取好友对象

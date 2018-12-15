@@ -77,5 +77,6 @@ class GetExpress:
         return  None
 
 
-express = GetExpress('9893476056142222')
-express.get_express()
+if __name__ == '__main__':
+    express = GetExpress('669474685215')
+    print(express.get_express())
